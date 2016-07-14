@@ -5,6 +5,7 @@ module.exports.all = function () {
     // return getByPage(1);
 //     return get();
 
+    // return promise
     return getAll();
 };
 
