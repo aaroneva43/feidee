@@ -2,47 +2,46 @@ var request = require('request-promise');
 var querystring = require('querystring');
 
 module.exports.all = function () {
-    // return getByPage(1);
-//     return get();
+	return getAll();
+	//     return get();
 
-    // return promise
-    return getAll();
-};
+}
 
-function getAll () {
-    return getByPage(1).then(function (data) {
-        
-        var rslt = [];
-        for (var i = 0; i < data.length; i++) {
-            var groups = data[i].groups;
-            
-            if (groups && groups.length) {
-                for (var j = 0; j < groups.length; j++) {
-                    var list = groups[j].list;
-                    
-                    if (list && list.length) {
-                        rslt = [].concat(rslt, list);
-                    }
-                }
-            }
-        }
+function getAll() {
+	return getByPage(1).then(function (data) {
 
-        return rslt;
-    });
+		var rslt = [];
+		for (var i = 0; i < data.length; i++) {
+			var groups = data[i].groups;
+
+			if (groups && groups.length) {
+				for (var j = 0; j < groups.length; j++) {
+					var list = groups[j].list;
+
+					if (list && list.length) {
+						rslt = [].concat(rslt, list);
+					}
+				}
+			}
+		}
+
+		return rslt;
+	});
 }
 
 function getByPage(page) {
-    return get({page:page}).then(function (data) {
-        
-        if (data.pageNo == data.pageCount) 
-            return data;
-        
-        
-        return getByPage(parseInt(data.pageNo) + 1).then(function (nextdata) {
-            console.log(nextdata.pageNo);
-            return [].concat(data, nextdata);
-        });
-    });
+	return get({
+		page : page
+	}).then(function (data) {
+
+		if (data.pageNo == data.pageCount)
+			return data;
+
+		return getByPage(parseInt(data.pageNo) + 1).then(function (nextdata) {
+			console.log(nextdata.pageNo);
+			return [].concat(data, nextdata);
+		});
+	});
 }
 
 function get(cfg) {
@@ -77,15 +76,13 @@ function get(cfg) {
 		'User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.63 Safari/537.36',
 		'X-Requested-With' : 'XMLHttpRequest'
 	};
-    
-    
-    
+
 	return request({
 		method : 'post',
 		url : 'http://www.feidee.com/money/tally/new.rmi',
 		gzip : true,
 		body : body,
-        json : true,
+		json : true,
 		headers : headers
 	}
 		/* , function (e, r, body) {
@@ -97,36 +94,36 @@ function get(cfg) {
 	);
 
 }
-/* 
+/*
 var getByDateRange = Promise.promisify(function (start, end) {
 
-		var getByPage = Promise.promisify(function (p) {
-				return get();
-			});
-		var cfg = {
-			startDate : formatDate(start),
-			endDate : formatDate(end),
-			pageNo : 1
-		};
+var getByPage = Promise.promisify(function (p) {
+return get();
+});
+var cfg = {
+startDate : formatDate(start),
+endDate : formatDate(end),
+pageNo : 1
+};
 
-	});
+});
 
 function getByDateRange = function (start, end) {
-	var list = [];
+var list = [];
 
-	var getByPage = function (page, cfg) {
-		get(Object.assign(cfg, {
-				page : page
-			}), function (data) {
-			if (data && data.pageNo < data.pageCount) {
-				getByPage(data.pageNo + 1, cfg);
-			}
+var getByPage = function (page, cfg) {
+get(Object.assign(cfg, {
+page : page
+}), function (data) {
+if (data && data.pageNo < data.pageCount) {
+getByPage(data.pageNo + 1, cfg);
+}
 
-			if (data && data.groups) {
-				list = list.concat(data.groups);
-			}
-		});
-	}
+if (data && data.groups) {
+list = list.concat(data.groups);
+}
+});
+}
 }
  */
 function formatDate(d) {
@@ -137,5 +134,5 @@ function formatDate(d) {
 }
 
 /* exports.info = Promise.promisify(function (cfg, callback) {})
-	exports.data = function (callback) {}
- */
+exports.data = function (callback) {}
+*/
