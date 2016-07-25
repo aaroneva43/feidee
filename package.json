@@ -11,6 +11,7 @@
   "dependencies": {
     "array": "^0.4.3",
     "bluebird": "^3.4.1",
+    "express": "^4.14.0",
     "node-inspector": "^0.12.8",
     "object-assign": "^4.1.0",
     "request": "^2.73.0",
